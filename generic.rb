@@ -42,6 +42,23 @@ FILE
 # Adding Compass
 gem 'chriseppstein-compass', :lib => 'compass', :source => 'http://gems.github.com/'
 run 'compass --rails -f blueprint . --sass-dir=app/stylesheets --css-dir=public/stylesheets/compiled'
+
+file 'app/views/layouts/application.html.haml', <<-FILE
+!!! HTML5
+%html#nojs{html_attrs('ru-RU')}
+  %head
+    %meta(http-equiv="Content-type" content="text/html; charset=UTF-8")
+    %title= [page_layout, t('title')].compact * '. '
+  %body
+    %header.b_header
+      %h1.b_logo= t('logo')
+    %nav.b_nav
+      %ul= main_navigation
+    %content.b_content
+      = yield
+    %footer.b_footer
+      %p.b_copyrights= t('copyrights')
+FILE
 git :add => '.'
 git :commit => '-am "HAML, SASS and Blueprint through Compass"'
 
