@@ -197,11 +197,11 @@ file 'app/views/user_sessions/new.haml', <<-FILE
 FILE
 
 # Adding routes
-["map.signin :controller => 'user_sessions', :action => 'new'",
- "map.signout :controller => 'user_sessions', :action => 'destroy'",
- "map.signup :controller => 'users', :action => 'new'",
- "map.resource :user_sessions",
- "map.resource :account, :controller => 'users'",
+["map.signin    'signin', :controller => 'user_sessions', :action => 'new'",
+ "map.signout   'signout', :controller => 'user_sessions', :action => 'destroy'",
+ "map.signup    'signup', :controller => 'users', :action => 'new'",
+ "map.resource  :user_sessions",
+ "map.resource  :account, :controller => 'users'",
  "map.resources :users",
 ].each do |r|
   route(r)
