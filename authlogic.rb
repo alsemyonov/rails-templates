@@ -204,7 +204,7 @@ FILE
  "map.resource :account, :controller => 'users'",
  "map.resources :users",
 ].each do |r|
-  router(r)
+  route(r)
 end
 
 git :add => '.'

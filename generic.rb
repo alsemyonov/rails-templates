@@ -86,7 +86,7 @@ FILE
 git :add => '.'
 git :commit => '-am "FastCGI Dispatchers and Apache Magic"'
 
-load_template "http://github.com/rotuka/rails-templates/authlogic.rb" if yes?("Add AuthLogic authentication?")
+load_template "http://github.com/rotuka/rails-templates/raw/master/authlogic.rb" if yes?("Add AuthLogic authentication?")
 
 # Installing gems
 rake 'gems:install', :sudo => true
