@@ -48,7 +48,7 @@ file 'app/views/layouts/application.html.haml', <<-FILE
 %html#nojs{html_attrs('ru-RU')}
   %head
     %meta(http-equiv="Content-type" content="text/html; charset=UTF-8")
-    %title= [page_layout, t('title')].compact * '. '
+    %title= [page_title, t('title')].compact * '. '
   %body
     %header.b_header
       %h1.b_logo= t('logo')
