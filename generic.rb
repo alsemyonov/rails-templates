@@ -1,15 +1,16 @@
 run "echo TODO > README"
 
-file '.gitignore', %q{
-.DS_store
+file '.gitignore', <<-FILE
 *.sqlite3
-log/*.log
-tmp/**/*
-public/cache/**/*
+.DS_store
 doc/api
 doc/app
 doc/plugins
-}
+log/*.log
+public/cache/**/*
+tmp/**/*
+vendor/gems
+FILE
 
 run 'touch tmp/.gitignore log/.gitignore vendor/.gitignore'
 run "cp config/database.yml config/example_database.yml"
@@ -19,16 +20,27 @@ git :init
 git :add => '.'
 git :commit => '-am "Generic rails application"'
 
-gem 'RedCloth', :lib => 'redcloth'
+# Adding items searching and pagination
 gem 'searchlogic'
 gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com/'
 git :add => '.'
-git :commit => '-am "RedCloth and Searchlogic support built in"'
+git :commit => '-am "WillPaginate and Searchlogic support built in"'
 
+# Adding HAML and SASS
 gem 'haml'
-gem 'chriseppstein-compass',
-    :lib => 'compass'
-run 'haml --rails .'
+file 'vendor/plugins/haml/init.rb', <<-FILE
+begin
+  require File.join(File.dirname(__FILE__), 'lib', 'haml') # From here
+rescue LoadError
+  require 'haml' # From gem
+end
+
+# Load Haml and Sass
+Haml.init_rails(binding)
+FILE
+
+# Adding Compass
+gem 'chriseppstein-compass', :lib => 'compass', :source => 'http://gems.github.com/'
 run 'compass --rails -f blueprint . --sass-dir=app/stylesheets --css-dir=public/stylesheets/compiled'
 git :add => '.'
 git :commit => '-am "HAML, SASS and Blueprint through Compass"'
@@ -36,7 +48,7 @@ git :commit => '-am "HAML, SASS and Blueprint through Compass"'
 plugin 'annotate_models', :git => 'git://github.com/rotuka/annotate_models.git'
 plugin 'irs_process_scripts', :git => 'git://github.com/rails/irs_process_scripts.git'
 run 'capify .'
-file 'config/deploy.rb', %q(
+file 'config/deploy.rb', %q{
 set :application, 'application_name_here'
 set :user, 'desmix'
 set :domain, 'eu107.activeby.net'
@@ -49,14 +61,14 @@ set :use_sudo, false
 set :checkout, 'export'
 
 server domain, :app, :web, :db, :primary => true
-)
+}
 
 git :add => '.'
 git :commit => '-am "Plugins for db and deploying"'
 
 # FastCGI Dispatchers and Apache Magic
 run 'rake rails:update:generate_dispatchers'
-file 'public/.htaccess', %q{
+file 'public/.htaccess', <<-FILE
 AddHandler fastcgi-script .fcgi
 AddHandler cgi-script .cgi
 Options +FollowSymLinks +ExecCGI
@@ -69,7 +81,12 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ dispatch.fcgi [QSA,L]
 
 ErrorDocument 500 "<h2>Application error</h2>Rails application failed to start properly"
-}
+FILE
 
 git :add => '.'
 git :commit => '-am "FastCGI Dispatchers and Apache Magic"'
+
+load_template "http://github.com/rotuka/rails-templates/authlogic.rb" if yes?("Add AuthLogic authentication?")
+
+# Installing gems
+rake 'gems:install', :sudo => true
