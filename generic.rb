@@ -20,14 +20,21 @@ git :init
 git :add => '.'
 git :commit => '-am "Generic rails application"'
 
-# Adding items searching and pagination
+# Adding some basic functionality
+gem 'haml'
 gem 'searchlogic'
+gem 'chriseppstein-compass', :lib => 'compass', :source => 'http://gems.github.com/'
+gem 'josevalim-inherited_resources', :lib => 'inherited_resources', :source => 'http://gems.github.com/'
 gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com/'
+gem 'krasivotokak-sugar', :lib => 'sugar', :source => 'http://gems.github.com/'
+gem 'yaroslav-russian', :lib => 'russian', :source => 'http://gems.github.com/'
+gem 'krasivotokak-espresso', :lib => 'espresso', :source => 'http://gems.github.com/'
+gem 'krasivotokak-sugar', :lib => 'sugar', :source => 'http://gems.github.com/'
+
 git :add => '.'
 git :commit => '-am "WillPaginate and Searchlogic support built in"'
 
 # Adding HAML and SASS
-gem 'haml'
 file 'vendor/plugins/haml/init.rb', <<-FILE
 begin
   require File.join(File.dirname(__FILE__), 'lib', 'haml') # From here
@@ -40,7 +47,6 @@ Haml.init_rails(binding)
 FILE
 
 # Adding Compass
-gem 'chriseppstein-compass', :lib => 'compass', :source => 'http://gems.github.com/'
 run 'compass --rails -f blueprint . --sass-dir=app/stylesheets --css-dir=public/stylesheets/compiled'
 
 file 'app/views/layouts/application.html.haml', <<-FILE
@@ -48,16 +54,16 @@ file 'app/views/layouts/application.html.haml', <<-FILE
 %html#nojs{html_attrs('ru-RU')}
   %head
     %meta(http-equiv="Content-type" content="text/html; charset=UTF-8")
-    %title= [page_title, t('title')].compact * '. '
+    %title= [page_title, t('application.title')].compact * '. '
   %body
     %header.b_header
-      %h1.b_logo= t('logo')
+      %h1.b_logo= t('application.logo')
     %nav.b_nav
       %ul= main_navigation
     %content.b_content
       = yield
     %footer.b_footer
-      %p.b_copyrights= t('copyrights')
+      %p.b_copyrights= t('application.copyrights')
 FILE
 git :add => '.'
 git :commit => '-am "HAML, SASS and Blueprint through Compass"'

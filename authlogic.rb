@@ -139,7 +139,7 @@ file 'app/views/users/new.html.haml', <<-FILE
 FILE
 
 # /account/edit
-file 'app/views/users/edit.haml', <<-FILE
+file 'app/views/users/edit.html.haml', <<-FILE
 %h1= page_title
 
 - form_for @user do |f|
@@ -182,7 +182,7 @@ end
 FILE
 
 # /signin
-file 'app/views/user_sessions/new.haml', <<-FILE
+file 'app/views/user_sessions/new.html.haml', <<-FILE
 %h1= page_title
 
 - form_for @user_session do |f|
