@@ -59,8 +59,8 @@ FILE
       if options[:mongo_mapper]
         gems << 'mongo_mapper'
         initializer 'mongo_mapper.rb', <<-FILE
-          MongoMapper.database = "#{app_name}-\#{Rails.env}"
-        FILE
+MongoMapper.database = "#{app_name}-\#{Rails.env}"
+FILE
       end
 
       if options[:action_controller]
@@ -128,7 +128,7 @@ FILE
       # FastCGI Dispatchers and Apache Magic
       run 'rake rails:update:generate_dispatchers'
       file 'public/.htaccess', <<-FILE
-AddHandler fastcgi-script .fcgi
+AddHandler fcgid-script .fcgi
 Options +FollowSymLinks +ExecCGI
 
 RewriteEngine On
